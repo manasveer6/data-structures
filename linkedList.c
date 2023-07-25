@@ -29,7 +29,7 @@ struct node *head = NULL;
 
 int main() {
 
-    printf("\n\t\tHey mf");
+    printf("\n\t\tSup bro");
 
     int choice = 1, data, index, insertChoice, deleteChoice, searchChoice;
 
@@ -182,7 +182,7 @@ int main() {
                 break;
 
             case 6:
-                printf("Nice, now fk off.\n");
+                printf("Ok, now byeee.\n");
                 exit(0);
                 break;
 
