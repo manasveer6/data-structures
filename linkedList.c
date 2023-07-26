@@ -13,6 +13,8 @@ List of operations that can be performed on the Linked List in this program:
     8. Delete an element at the end of the list
     9. Reverse the list
     10. Sort the list in ascending order (I used bubble sort for now)
+
+    All indexes and position counts start from 0.
 */
 
 #include <stdio.h>
