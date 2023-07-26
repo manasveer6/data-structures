@@ -1,30 +1,60 @@
+/*
+A program on implementation of Singly Linked List and various operations performed on it.
+ 
+List of operations that can be performed on the Linked List in this program:
+
+    1. Display the whole list
+    2. Display the whole list in reverse order
+    3. Insert an element at the start of the list
+    4. Insert an element in a specific position in the list (Positioned relative to nth node instead of position)
+    5. Insert an element at the end of the list
+    6. Delete an element at the start of the list
+    7. Delete an element present at a specified position
+    8. Delete an element at the end of the list
+    9. Reverse the list
+    10. Sort the list in ascending order (I used bubble sort for now)
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 
-//All indexes start from 0
-
+//Node declaration
 struct node {
     int data;
     struct node *next;
 };
 
+//Helper functions:
+
 const char* setSuffixByNumber(int);
 int sizeOfLinkedList(struct node *);
-void insertAtStart(int);
-void insertAfter_nthNode(int, int);
-void insertAtEnd(int);
-void deleteAtStart();
-void delete_nthNode(int);
-void deleteAtEnd();
-void findNodeWithData(int);
-void findNodeWithIndex(int);
-void sortLinkedList(struct node *);
-void display();
 void showMenu();
 bool isEmpty(struct node *);
 
+//Main linked list operation functions:
+
+void insertAtStart(int);
+void insertAfter_nthNode(int, int);
+void insertAtEnd(int);
+
+void deleteAtStart();
+void delete_nthNode(int);
+void deleteAtEnd();
+
+void findNodeWithData(int);
+void findNodeWithIndex(int);
+
+void sortLinkedList(struct node *);
+
+void display();
+void displayInReverse(struct node *);
+
+void reverseList(struct node *);
+
+
+//Head pointer, always points to the first node/element of the Linked List.
 struct node *head = NULL;
 
 int main() {
@@ -182,7 +212,16 @@ int main() {
                 break;
 
             case 6:
-                printf("Ok, now byeee.\n");
+                displayInReverse(head);
+                break;
+
+            case 7:
+                reverseList(head);
+                display();
+                break;
+
+            case 8:
+                printf("Ok, now byeee shoo.\n");
                 exit(0);
                 break;
 
@@ -193,12 +232,14 @@ int main() {
 return 0;
 }
 
+//Function checks whether the list is empty or not. Returns true if empty, false if not.
 bool isEmpty(struct node *start) {
     if(start == NULL)
         return true;
     else return false;
 }
 
+//Sets the suffix for a given number. Ex: 1st, 2nd, 3rd, 4th, etc. Made purely for aesthetic purposes.
 const char* setSuffixByNumber(int n) {
     int units_digit = n%10;
     static char str[3];
@@ -214,6 +255,7 @@ const char* setSuffixByNumber(int n) {
     return str;
 }
 
+//Calculates size of the Linked List i.e. total number of nodes/elements.
 int sizeOfLinkedList(struct node *start) {
     int n = 0;
     struct node *temp = start;
@@ -226,6 +268,7 @@ int sizeOfLinkedList(struct node *start) {
     return n;
 }
 
+//Inserts a node/element at the start of the Linked List.
 void insertAtStart(int x) {
     struct node *new = malloc(sizeof(struct node));
 
@@ -234,6 +277,8 @@ void insertAtStart(int x) {
     head = new;
 }
 
+//Inserts a node/element in the middle of a Linked List, position is given relative to another node, 
+//i.e new node is inserted after the node found at the given position.
 void insertAfter_nthNode(int n, int x) {
 
     struct node *temp = head->next;
@@ -253,6 +298,7 @@ void insertAfter_nthNode(int n, int x) {
     prev->next = new;
 }
 
+//Inserts a node/element at the end of the Linked List.
 void insertAtEnd(int x) {
     struct node *temp = head;
 
@@ -262,13 +308,19 @@ void insertAtEnd(int x) {
     struct node *new = malloc(sizeof(struct node));
 
     new->data = x;
-    temp->next = new;
+    if(head == NULL) {
+        head = new;
+    } else {
+        temp->next = new;
+    }
 }
 
+//Deletes the first node of the Linked List.
 void deleteAtStart() {
     head = head->next;
 }
 
+//Deletes the nth element of the Linked list.
 void delete_nthNode(int n) {
     n--;
 
@@ -286,6 +338,7 @@ void delete_nthNode(int n) {
     prev->next = temp->next;
 }
 
+//Deletes the last element of the Linked List.
 void deleteAtEnd() {
     struct node *temp = head->next;
     struct node *prev = head;
@@ -297,6 +350,7 @@ void deleteAtEnd() {
     prev->next = NULL;
 }
 
+//Finds the node which contains the given data.
 void findNodeWithData(int x) {
     struct node *temp = head;
     int position = 0;
@@ -313,6 +367,7 @@ void findNodeWithData(int x) {
     printf("%d not found.\n", x);
 }
 
+//Finds the node which is located at the given index/position.
 void findNodeWithIndex(int position) {
     if(position < 0) {
         printf("Invalid index, list positions start from 0.\n");
@@ -331,8 +386,8 @@ void findNodeWithIndex(int position) {
     printf("Data at %d%s node is: %d\n", position, setSuffixByNumber(position), temp->data);
 }
 
+//Sorts the Linked List in ascending order using bubble sort algorithm.
 void sortLinkedList(struct node *start) {
-    //This function uses bubble sort method to sort the given linked list
     int size = sizeOfLinkedList(start);
 
     struct node *temp = start->next;
@@ -352,6 +407,7 @@ void sortLinkedList(struct node *start) {
     }
 }
 
+//Displays each element of the Linked List.
 void display() {
 
     if(isEmpty(head)) {
@@ -368,15 +424,57 @@ void display() {
     printf("%d\n", temp->data);
 }
 
-void showMenu() {
-   printf("\n\n____________________________________________________________");
-   printf("\n\nChoose one - ");
-   printf("\n\n\n\t1. DISPLAY the list");
-   printf("\n\n\t2. INSERTING a node into the list");
-   printf("\n\n\t3. DELETING a node from the list");
-   printf("\n\n\t4. SEARCHING for an element in the list");
-   printf("\n\n\t5. SORTING the list");
-   printf("\n\n\t6. EXIT");
+//DIsplays each element of the Linked List but in reverse order.
+void displayInReverse(struct node *temp) {
+    if(temp->next != NULL) {
+        displayInReverse(temp->next);
+    }
+    printf("%d", temp->data);
 
-   printf("\n\nEnter the operation you'd like to perform [1-6] : ");
+    if(temp != head) {
+        printf(" -> ");
+    }
+}
+
+//Reverses the Linked List
+void reverseList(struct node *temp) {
+    //Reversing using recursion method but this was not efficient.
+    // if(temp->next != NULL) {
+    //     reverseList(temp->next);
+    // }
+    //
+    // insertAtEnd(temp->data);
+    // if(temp->next->next == NULL) {
+    //     head = temp->next;
+    // }
+
+    struct node *prev = NULL;
+    struct node *current = head;
+    struct node *next = NULL;
+
+    while (current != NULL) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+
+    head = prev;
+}
+
+//Shows user menu
+void showMenu() {
+
+    printf("\n\n____________________________________________________________");
+    printf("\n\nChoose one - ");
+    printf("\n\n\n\t1. DISPLAY the list");
+    printf("\n\n\t2. INSERTING a node into the list");
+    printf("\n\n\t3. DELETING a node from the list");
+    printf("\n\n\t4. SEARCHING for an element in the list");
+    printf("\n\n\t5. SORTING the list");
+    printf("\n\n\t6. DISPLAY the list in reverse");
+    printf("\n\n\t7. REVERSE the list");
+    printf("\n\n\t8. EXIT");
+
+    printf("\n\nEnter the operation you'd like to perform [1-8] : ");
 }
