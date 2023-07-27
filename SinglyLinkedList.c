@@ -59,13 +59,16 @@ void reverseList(struct node *);
 //Head pointer, always points to the first node/element of the Linked List.
 struct node *head = NULL;
 
+bool success;
+
 int main() {
 
-    printf("\n\t\tSup bro");
+    printf("\n\t\t\tSup bro\n");
 
     int choice = 1, data, index, insertChoice, deleteChoice, searchChoice;
 
     while(choice) {
+        success = false;
         showMenu();
         scanf("%d", &choice);
 
@@ -76,7 +79,7 @@ int main() {
                 break;
             
             case 2:
-                printf("\nChoose one option - \n\n\t1. Insert at start\n\t2. Insert at end\n\t3. Insert at any other position\n\nEnter[1-3]: ");
+                printf("\nChoose one option - \n\n\t1. Insert at start\n\t2. Insert at end\n\t3. Insert at any other position\n\nEnter [1-3]: ");
                 scanf("%d", &insertChoice);
 
                 switch(insertChoice) {
@@ -85,12 +88,12 @@ int main() {
                         printf("Enter data: ");
                         scanf("%d", &data);
 
-                        printf("List before insertion: ");
+                        printf("\nList before insertion: ");
                         display();
 
                         insertAtStart(data);
 
-                        printf("List after insertion: ");
+                        printf("\nList after insertion: ");
                         display();
 
                         break;
@@ -99,12 +102,12 @@ int main() {
                         printf("Enter data: ");
                         scanf("%d", &data);
 
-                        printf("List before insertion: ");
+                        printf("\nList before insertion: ");
                         display();
 
                         insertAtEnd(data);
 
-                        printf("List after insertion: ");
+                        printf("\nList after insertion: ");
                         display();
 
                         break;
@@ -115,12 +118,12 @@ int main() {
                         printf("Enter position of insertion [Index starts from 0]: ");
                         scanf("%d", &index);
 
-                        printf("List before insertion: ");
+                        printf("\nList before insertion: ");
                         display();
 
                         insertAfter_nthNode(index, data);
 
-                        printf("List after insertion: ");
+                        printf("\nList after insertion: ");
                         display();
                         
                         break;
@@ -130,44 +133,53 @@ int main() {
                 break;
             
             case 3:
-                printf("\nChoose one option - \n\n\t1. Delete first element\n\t2. Delete last element\n\t3. Delete at any other position\n\nEnter[1-3]: ");
+                printf("\nChoose one option - \n\n\t1. Delete first element\n\t2. Delete last element\n\t3. Delete at any other position\n\nEnter [1-3]: ");
                 scanf("%d", &deleteChoice);
 
                 switch(deleteChoice) {
                     
                     case 1:
-                        printf("List before deletion: ");
+
+                        printf("\nList before deletion: ");
                         display();
 
                         deleteAtStart();
 
-                        printf("Successfully deleted element!\nList after deletion: ");
-                        display();
+                        if(success) {
+                            printf("\nSuccessfully deleted element! List after deletion: ");
+                            display();
+                        }
 
                         break;
                     
                     case 2:
-                        printf("List before deletion: ");
+
+                        printf("\nList before deletion: ");
                         display();
 
                         deleteAtEnd();
 
-                        printf("Successfully deleted element!\nList after deletion: ");
-                        display();
+                        if(success) {
+                            printf("\nSuccessfully deleted element! List after deletion: ");
+                            display();
+                        }
 
                         break;
 
                     case 3:
+
                         printf("Enter position of deletion [Index starts from 0]: ");
                         scanf("%d", &index);
 
-                        printf("List before deletion: ");
+                        printf("\nList before deletion: ");
                         display();
 
                         delete_nthNode(index);
 
-                        printf("Successfully deleted element!\nList after deletion: ");
-                        display();
+                        if(success) {
+                            printf("\nSuccessfully deleted element! List after deletion: ");
+                            display();
+                        }
 
                         break;
                     
@@ -176,7 +188,7 @@ int main() {
                 break;
 
             case 4:
-                printf("\nChoose one option - \n\n\t1. Searching by value\n\t2. Searching by index\n\nEnter[1-2]: ");
+                printf("\nChoose one option - \n\n\t1. Searching by value\n\t2. Searching by index\n\nEnter [1-2]: ");
                 scanf("%d", &searchChoice);
 
                 switch(searchChoice) {
@@ -303,31 +315,56 @@ void insertAfter_nthNode(int n, int x) {
 //Inserts a node/element at the end of the Linked List.
 void insertAtEnd(int x) {
     struct node *temp = head;
+    struct node *new = malloc(sizeof(struct node));
+
+    new->data = x;
+    new->next = NULL;
+
+    if(head == NULL) {
+        head = new;
+        return;
+    }
 
     while(temp->next != NULL) {
         temp = temp->next;
     }
-    struct node *new = malloc(sizeof(struct node));
 
-    new->data = x;
-    if(head == NULL) {
-        head = new;
-    } else {
-        temp->next = new;
-    }
+    temp->next = new;
 }
 
 //Deletes the first node of the Linked List.
 void deleteAtStart() {
+
+    if(isEmpty(head)) {
+        printf("Cannot delete. List is empty.\n");
+        return;
+    }
+
     head = head->next;
+
+    success = true;
 }
 
 //Deletes the nth element of the Linked list.
 void delete_nthNode(int n) {
+
+    if (isEmpty(head)) {
+        printf("Cannot delete. List is empty.\n");
+        return;
+    }
+
+   int size = sizeOfLinkedList(head);
+
+    if(n > size-1 || n < 0) {
+        printf("Index out of bounds, try again between [%d, %d]\n", 0, size-1);
+        return;
+    }
+
     n--;
 
     struct node *temp = head->next;
     struct node *prev = head;
+
     for(int i=0; i<n; i++) {
         if(temp == NULL) {
             printf("%d%s node doesn't exist.\n", n, setSuffixByNumber(n));
@@ -338,10 +375,25 @@ void delete_nthNode(int n) {
     }
 
     prev->next = temp->next;
+
+    success = true;
 }
 
 //Deletes the last element of the Linked List.
 void deleteAtEnd() {
+
+    if (isEmpty(head)) {
+        printf("Cannot delete. List is empty.\n");
+        return;
+    }
+    
+    if (head->next == NULL) {
+        // There is only one node in the list.
+        free(head);
+        head = NULL; // Set head to NULL to indicate an empty list.
+        return;
+    }
+
     struct node *temp = head->next;
     struct node *prev = head;
 
@@ -350,6 +402,8 @@ void deleteAtEnd() {
         prev = prev->next;
     }
     prev->next = NULL;
+
+    success = true;
 }
 
 //Finds the node which contains the given data.
@@ -413,12 +467,13 @@ void sortLinkedList(struct node *start) {
 void display() {
 
     if(isEmpty(head)) {
-        printf("\nCannot display, list is empty.\n");
+        printf("\nList is empty.\n");
         return;
     }
 
     struct node *temp = head;
 
+    printf("\n");
     while(temp->next != NULL) {
         printf("%d -> ", temp->data);
         temp = temp->next;
@@ -428,6 +483,12 @@ void display() {
 
 //DIsplays each element of the Linked List but in reverse order.
 void displayInReverse(struct node *temp) {
+
+    if(isEmpty(head)) {
+        printf("\nList is empty.\n");
+        return;
+    }
+
     if(temp->next != NULL) {
         displayInReverse(temp->next);
     }
@@ -467,7 +528,7 @@ void reverseList(struct node *temp) {
 //Shows user menu
 void showMenu() {
 
-    printf("\n\n____________________________________________________________");
+    printf("\n____________________________________________________________");
     printf("\n\nChoose one - ");
     printf("\n\n\n\t1. DISPLAY the list");
     printf("\n\n\t2. INSERTING a node into the list");
