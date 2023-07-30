@@ -49,7 +49,7 @@ int main() {
     int choice, num;
 
     while(true) {
-        
+
         showMenu();
         scanf("%d", &choice);
 
@@ -163,11 +163,11 @@ void showMenu() {
     printf("\n____________________________________________________________");
     printf("\n\nChoose one - ");
     printf("\n\n\n\t1. DISPLAY the stack");
-    printf("\n\n\t2. Peek the stack");
-    printf("\n\n\t3. Push into the stack");
-    printf("\n\n\t4. Pop from the stack");
-    printf("\n\n\t5. Clear the stack");
+    printf("\n\n\t2. PEEK the stack");
+    printf("\n\n\t3. PUSH into the stack");
+    printf("\n\n\t4. POP from the stack");
+    printf("\n\n\t5. CLEAR the stack");
     printf("\n\n\t6. EXIT");
 
-    printf("\n\nEnter the operation you'd like to perform [1-4] : ");
+    printf("\n\nEnter the operation you'd like to perform [1-6] : ");
 }
