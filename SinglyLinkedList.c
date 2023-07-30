@@ -63,11 +63,16 @@ bool success;
 
 int main() {
 
-    printf("\n\t\t\tSup bro\n");
+    printf("\n");
+    printf("***************************************************************\n");
+    printf("*                                                             *\n");
+    printf("*            Welcome to Singly Linked List Program            *\n");
+    printf("*                                                             *\n");
+    printf("***************************************************************\n");
 
     int choice = 1, data, index, insertChoice, deleteChoice, searchChoice;
 
-    while(choice) {
+    while(true) {
         success = false;
         showMenu();
         scanf("%d", &choice);
@@ -235,7 +240,13 @@ int main() {
                 break;
 
             case 8:
-                printf("Ok, now byeee shoo.\n");
+                printf("\n");
+                printf("*********************************************************\n");
+                printf("*                                                       *\n");
+                printf("*                      Goodbye!                         *\n");
+                printf("*         Thank you for using the Linked List!          *\n");
+                printf("*                                                       *\n");
+                printf("*********************************************************\n\n");
                 exit(0);
                 break;
 
@@ -246,7 +257,7 @@ int main() {
 return 0;
 }
 
-//Function checks whether the list is empty or not. Returns true if empty, false if not.
+//Checks whether the list is empty or not. Returns true if empty, false if not.
 bool isEmpty(struct node *start) {
     if(start == NULL)
         return true;
@@ -499,7 +510,7 @@ void displayInReverse(struct node *temp) {
     }
 }
 
-//Reverses the Linked List
+//Reverses the Linked List.
 void reverseList(struct node *temp) {
     //Reversing using recursion method but this was not efficient.
     // if(temp->next != NULL) {
@@ -525,7 +536,7 @@ void reverseList(struct node *temp) {
     head = prev;
 }
 
-//Shows user menu
+//Shows user menu.
 void showMenu() {
 
     printf("\n____________________________________________________________");
