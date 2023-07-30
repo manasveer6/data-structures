@@ -73,6 +73,7 @@ int main() {
     int choice = 1, data, index, insertChoice, deleteChoice, searchChoice;
 
     while(true) {
+        
         success = false;
         showMenu();
         scanf("%d", &choice);
