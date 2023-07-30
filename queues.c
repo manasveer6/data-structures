@@ -15,7 +15,7 @@ List of operations that can be performed on the Queue in this program:
 #include <stdbool.h>
 
 //Maximum size of the queue
-#define MAX_SIZE 5
+#define MAX_SIZE 100
 
 //Helper functions:
 
