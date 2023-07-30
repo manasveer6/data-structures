@@ -1,1 +1,1 @@
-Just a program to implement Linked List data structure.
+Welcome to my repo where I try out and practice data structures using C 👍.
