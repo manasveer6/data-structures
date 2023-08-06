@@ -121,7 +121,7 @@ int main() {
                     case 3:
                         printf("Enter data: ");
                         scanf("%d", &data);
-                        printf("Enter position of insertion [Index starts from 0]: ");
+                        printf("Enter position of insertion. New element will be added after the node present at given position [Index starts from 0]: ");
                         scanf("%d", &index);
 
                         printf("\nList before insertion: ");
@@ -306,6 +306,12 @@ void insertAtStart(int x) {
 //Inserts a node/element in the middle of a Linked List, position is given relative to another node, 
 //i.e new node is inserted after the node found at the given position.
 void insertAfter_nthNode(int n, int x) {
+
+    if(head == NULL) {
+        printf("\nInserting node at index 0 because list is empty.\n");
+        insertAtStart(x);
+        return;
+    }
 
     struct node *temp = head->next;
     struct node *prev = head;
@@ -501,6 +507,7 @@ void displayInReverse(struct node *temp) {
         return;
     }
 
+    printf("\n");
     if(temp->next != NULL) {
         displayInReverse(temp->next);
     }
