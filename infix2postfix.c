@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-char stack[20];
+#define MAX_SIZE 20
+
+char stack[MAX_SIZE];
 int top = -1;
-const int size = 20;
 
 void push(char);
 char pop();
@@ -12,12 +13,10 @@ int priority(char);
 
 int main() {
 
-    // printf("\033[1;31mHello World\033[1;0m\n\n");
-
     char exp[20];
     char *c, temp;
 
-    // printf("\e[1;1H\e[2J");
+    printf("\e[1;1H\e[2J");
     printf("Enter infix expression: ");
     scanf("%s", exp);
     c = exp;
@@ -42,7 +41,7 @@ int main() {
                 printf("%c", pop());
             push(*c);
         }
-        
+
         c++;
     }
 
@@ -55,7 +54,7 @@ int main() {
 }
 
 void push(char ch) {
-    if(top == size-1) {
+    if(top == MAX_SIZE-1) {
         printf("\033[1;31mError pushing, Stack overflow.\n");
         exit(1);
     }
