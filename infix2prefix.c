@@ -1,5 +1,3 @@
-//DOESNT WORK YET AAAHHHHH
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,21 +16,19 @@ void append_str(char*, char ch);
 
 int main() {
 
-    char input[MAX_SIZE], exp[MAX_SIZE+2];
+    char exp[MAX_SIZE+1];
     char result[MAX_SIZE];
     char *c, temp;
 
     printf("\e[1;1H\e[2J");
     printf("Enter infix expression: ");
-    scanf("%s", input);
-    snprintf(exp, sizeof(exp), "(%s)", input);
+    scanf("%s", exp);
 
     c = exp;
 
     strcpy(exp, reverse_exp(exp));
-    printf("Reversed infix: %s\n", exp);
 
-    printf("Postfix expression: ");
+    printf("Prefix expression: ");
 
     while(*c != '\0') {
 
@@ -40,12 +36,11 @@ int main() {
             append_str(result, *c);
 
         else if(*c == '(')
-            append_str(result, *c);
+            push(*c);
 
-        else if(*c == ')') {
+        else if(*c == ')')
             while((temp = pop()) != '(')
                 append_str(result, temp);
-        }
 
         else {
             while(priority(stack[top]) >= priority(*c))
@@ -59,6 +54,7 @@ int main() {
     while(top != -1)
         append_str(result, pop());
 
+    strcpy(result, reverse_exp(result));
     printf("%s", result);
     printf("\n");
 
