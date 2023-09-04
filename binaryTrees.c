@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <unistd.h>
+
+#define COUNT 10
 
 struct node {
     int data;
@@ -16,6 +19,7 @@ struct queue_node {
 struct Queue {
     struct queue_node* front;
     struct queue_node* rear;
+    int size;
 };
 
 struct node* newNode(int);
@@ -23,6 +27,7 @@ void display(struct node*);
 struct Queue* createQueue();
 void enqueue(struct Queue*, struct node*);
 void dequeue(struct Queue*);
+int height(struct node*);
 
 int main() {
 
@@ -45,6 +50,8 @@ int main() {
     root->right->right->right = newNode(15);
 
     display(root);
+
+    printf("Height: %d\n", height(root));
 
     return 0;
 }
@@ -95,10 +102,26 @@ void postorder(struct node* root) {
     printf("%d -> ", root->data);
 }
 
+int height(struct node* root) {
+
+    if(root == NULL)
+        return 0;
+    else {
+
+    int lheight = height(root->left);
+    int rheight = height(root->right);
+
+    if(lheight > rheight)
+        return (lheight + 1);
+    else return (rheight + 1);
+    }
+}
+
 struct Queue* createQueue() {
     struct Queue *queue = malloc(sizeof(struct Queue));
 
     queue->front = queue->rear = NULL;
+    queue->size = 0;
 
     return queue;
 }
@@ -109,23 +132,28 @@ void enqueue(struct Queue* queue, struct node* root) {
     new->next = NULL;
     new->ptr = root;
 
-    if(queue->rear == NULL) {
+    if(queue->rear == NULL || queue->front == NULL) {
         queue->front = queue->rear = new;
+        queue->size = 1;
         return;
     }
 
     queue->rear->next = new;
     queue->rear = new;
+    (queue->size)++;
 }
 
 void dequeue(struct Queue* queue) {
 
-    if(queue->front == NULL)
+    if(queue->front == NULL) {
+        queue->size = 0;
         return;
+    }
     
     struct queue_node* temp = queue->front;
     queue->front = queue->front->next;
     free(temp);
+    (queue->size)--;
 }
 
 void moveNext(struct Queue* queue, struct node* root) {
@@ -161,11 +189,34 @@ void levelorder(struct node* root) {
         moveNext(queue, root);
 }
 
+void print2D_Util(struct node* root, int space) {
+
+    if(root == NULL)
+        return;
+
+    space += COUNT;
+
+    print2D_Util(root->right, space);
+
+    printf("\n");
+    for(int i = 0; i < space - COUNT; i++) {
+        printf(" ");
+    }
+    printf("%d\n", root->data);
+
+    print2D_Util(root->left, space);
+
+}
+
+void print2D(struct node* root) {
+    print2D_Util(root, 0);
+}
+
 void display(struct node* root) {
 
     int choice;
     printf("Choose traversal method:\n");
-    printf("1. Inorder\n2. Preoder\n3. Postorder\n4. Level order\n: ");
+    printf("1. Inorder\n2. Preoder\n3. Postorder\n4. Level order\n5. 2-Dimensional\n: ");
     scanf("%d", &choice);
 
     switch(choice) {
@@ -184,6 +235,10 @@ void display(struct node* root) {
 
         case 4:
             levelorder(root);
+            break;
+
+        case 5:
+            print2D(root);
             break;
 
         default: printf("Invalid choice.\n");
