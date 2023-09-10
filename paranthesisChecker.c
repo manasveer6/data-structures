@@ -10,9 +10,9 @@ bool checkPair();
 bool isPar(char);
 bool isOpenPar(char);
 bool parType(char, char);
-bool checkPar(char*);
+bool checkParanthesis(char*);
 
-char parStack[MAX_SIZE];
+char stack[MAX_SIZE];
 int top = -1;
 
 int main() {
@@ -22,7 +22,7 @@ int main() {
     printf("Enter an expression: ");
     scanf("%s", exp);
 
-    bool result = checkPar(exp);
+    bool result = checkParanthesis(exp);
 
     printf( (result) ? "Balanced expression.\n" : "Unbalanced Expression.\n" );
 
@@ -36,7 +36,7 @@ void push(char ch) {
         exit(1);
     }
 
-    parStack[++top] = ch;
+    stack[++top] = ch;
 }
 
 bool isPar(char ch) {
@@ -64,8 +64,8 @@ bool checkPair() {
         return false;
     }
 
-    char closePar = parStack[top--];
-    char openPar = parStack[top--];
+    char closePar = stack[top--];
+    char openPar = stack[top--];
 
     if(parType(openPar, closePar)) {
         return true;
@@ -73,7 +73,7 @@ bool checkPair() {
     else return false;
 }
 
-bool checkPar(char* exp) {
+bool checkParanthesis(char* exp) {
 
     char *c = exp;
     bool result = true;
